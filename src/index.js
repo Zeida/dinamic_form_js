@@ -6,8 +6,7 @@ let age;
 const people = [];
 let errorList = [];
 const peopleList = document.querySelector(".people-list");
-let uniqueIdCounter = 0;
-const uniqueId = `person-${uniqueIdCounter}`;
+let uniqueIdCounter;
 
 const searchInput = document.getElementById("person-search");
 const searchButton = document.getElementById("person-search-button");
@@ -101,6 +100,8 @@ function addPerson() {
 
   const error = document.querySelector(".register-errors");
   const person = { id: `person-${uniqueIdCounter}`, name, email, age };
+  const uniqueId = `person-${uniqueIdCounter}`;
+  uniqueIdCounter++;
   if (error) {
     error.innerHTML = "";
   }
@@ -108,8 +109,6 @@ function addPerson() {
   const inputs = document.querySelectorAll("input");
 
   if (fieldsOk && emailOk.valid && !emailOk.repeated) {
-    uniqueIdCounter++;
-
     peopleList.innerHTML += generateCardHtml(person);
     people.push({ id: uniqueId, name, email, age });
 
@@ -156,7 +155,7 @@ const resetButton = document.getElementById("reset-button");
 
 resetButton.addEventListener("click", function () {
   filteredPerson(people);
-  document.getElementById("person-search").value = "";
+  searchInput.value = "";
 });
 
 // ----------------- Remove person  -----------------
@@ -164,18 +163,14 @@ peopleList.addEventListener("click", function (event) {
   if (event.target && event.target.classList.contains("person-remove")) {
     const uniqueId = event.target.getAttribute("data-id");
 
-    if (uniqueId) {
-      const cardElement = document.getElementById(uniqueId);
+    const cardElement = document.getElementById(uniqueId);
+    console.log(cardElement);
 
-      if (cardElement) {
-        cardElement.remove();
-      }
+    cardElement.remove();
 
-      const personIndex = people.findIndex(person => person.id === uniqueId);
-      if (personIndex !== -1) {
-        people.splice(personIndex, 1);
-        console.log(`Persona con ID ${uniqueId} eliminada del array.`);
-      }
+    const personIndex = people.findIndex(person => person.id === uniqueId);
+    if (personIndex !== -1) {
+      people.splice(personIndex, 1);
     }
   }
 });
