@@ -1,0 +1,73 @@
+body{
+  background-color: antiquewhite;
+}
+
+.card {
+  max-width: 250px;
+}
+
+.people-dashboard {
+  display: inline-flex;
+  flex-direction: row;
+}
+
+.register-form{
+  display:inline-flex;
+  flex-direction: column;
+  background-color: bisque;
+  padding: 40px;
+  margin:30px;
+  flex-shrink: 0;
+  max-width: 350px;
+  max-height: 500px;
+}
+
+.btn {
+  margin-top:30px;
+  width: 260px;
+}
+
+.register-errors{
+  padding-top: 20px;
+  color:red;
+}
+
+.people-list{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  grid-auto-rows: minmax(100px, 200px);
+}
+
+.people-list-container{
+  margin: 30px;
+  display:flex;
+  flex-direction: column;
+  padding: 30px;
+  background-color: bisque;
+  min-width: 900px;
+  max-width: 1000px;
+  flex-grow: 1
+}
+
+.search{
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center; 
+  width: 100%; 
+  padding-bottom:40px;
+}
+
+h1 {
+  padding-bottom: 30px;
+  display: flex;
+  place-content: center center;
+}
+
+input.toggle-class {
+  border: 1px solid red;
+}
+
+.person-remove {
+  color:red;
+}
