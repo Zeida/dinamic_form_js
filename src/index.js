@@ -1,60 +1,33 @@
-let fieldsOk = false;
-const emailOk = { valid: "false", repeated: "false" };
 let name;
 let email;
 let age;
 const people = [];
 let errorList = [];
 const peopleList = document.querySelector(".people-list");
-let uniqueIdCounter;
-
-const searchInput = document.getElementById("person-search");
-const searchButton = document.getElementById("person-search-button");
+let uniqueIdCounter = 0;
 
 // #################### VALIDACIÓN DE DATOS y GESTIÓN DE ERRORES ####################
 
 function validateFieldsNotEmpty() {
-  name = document.querySelector("[type='text']").value;
-  email = document.querySelector("[type='email']").value;
-  age = document.querySelector("[type='number']").value;
-  fieldsOk = (name !== "" && email !== "" && age !== "");
+  name = document.querySelector("[type='text']").value.trim();
+  email = document.querySelector("[type='email']").value.trim();
+  age = document.querySelector("[type='number']").value.trim();
+  return (name !== "" && email !== "" && age !== "");
 }
 
-function uniqueEmail(email) {
-  emailOk.repeated = people.some(person => person.email === email);
+function validateEmailExist(email) {
+  return people.some(person => person.email === email);
 }
 
 function validateEmailFormat(email) {
   const emailPattern = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
-  emailOk.valid = emailPattern.test(email);
+  return emailPattern.test(email);
 }
 
 function errorsOnForm() {
   errorList = [];
-  validateFieldsNotEmpty();
-  validateEmailFormat(email);
-  uniqueEmail(email);
-  if (!fieldsOk) {
+  if (!validateFieldsNotEmpty()) {
     errorList.push("Rellene todos los campos para poder añadir la persona.");
-  }
-  if (email !== "" && !emailOk?.valid) {
-    errorList.push("El email no tiene un formato válido, revísalo.");
-  }
-  if (email !== "" && emailOk?.repeated) {
-    errorList.push("Ese email ya se encuentra añadido. Pruebe con otro.");
-  }
-}
-
-function handleErrors(errorContainer) {
-  if (errorContainer) {
-    errorContainer.innerHTML += `<p id="error" class="error"> * 
-      ${errorList.map(error => `${error}`).join("<br>")}
-    </p>`;
-  }
-}
-
-function highlightInvalidInputs() {
-  if (!fieldsOk) {
     if (name === "") {
       document.querySelector("[type='text']").classList.add("toggle-class");
     }
@@ -65,13 +38,21 @@ function highlightInvalidInputs() {
       document.querySelector("[type='number']").classList.add("toggle-class");
     }
   }
-
-  if (email !== "" && !emailOk.valid) {
+  if (email !== "" && !validateEmailFormat(email)) {
+    errorList.push("El email no tiene un formato válido, revísalo.");
     document.querySelector("[type='email']").classList.add("toggle-class");
   }
-
-  if (email !== "" && emailOk?.repeated) {
+  if (email !== "" && validateEmailExist(email)) {
+    errorList.push("Ese email ya se encuentra añadido. Pruebe con otro.");
     document.querySelector("[type='email']").classList.add("toggle-class");
+  }
+}
+
+function handleErrors(errorContainer) {
+  if (errorContainer) {
+    errorContainer.innerHTML += `<p id="error" class="error"> * 
+      ${errorList.map(error => `${error}`).join("<br>")}
+    </p>`;
   }
 }
 
@@ -101,6 +82,7 @@ function addPerson() {
   const error = document.querySelector(".register-errors");
   const person = { id: `person-${uniqueIdCounter}`, name, email, age };
   const uniqueId = `person-${uniqueIdCounter}`;
+
   uniqueIdCounter++;
   if (error) {
     error.innerHTML = "";
@@ -108,7 +90,7 @@ function addPerson() {
 
   const inputs = document.querySelectorAll("input");
 
-  if (fieldsOk && emailOk.valid && !emailOk.repeated) {
+  if (validateFieldsNotEmpty() && validateEmailFormat(email) && !validateEmailExist(email)) {
     peopleList.innerHTML += generateCardHtml(person);
     people.push({ id: uniqueId, name, email, age });
 
@@ -117,7 +99,6 @@ function addPerson() {
     });
   } else {
     handleErrors(error);
-    highlightInvalidInputs();
   }
 }
 
@@ -132,6 +113,7 @@ function filteredPerson(filtered) {
 // ############################ Manejo de eventos [botones] ############################
 
 // ----------------- Add person  -----------------
+
 const addButton = document.getElementById("add-button");
 
 addButton.addEventListener("click", function () {
@@ -139,6 +121,10 @@ addButton.addEventListener("click", function () {
 });
 
 // ----------- Search person (1 unique register -> 100% coincidence with name ) -----------
+
+const searchInput = document.getElementById("person-search");
+const searchButton = document.getElementById("person-search-button");
+
 searchButton.addEventListener("click", function () {
   const searchTerm = searchInput.value.trim();
   if (searchTerm === "") {

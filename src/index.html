@@ -13,7 +13,9 @@
 
 <body class="container">
   <div class="people-dashboard">
+
     <div class="register-form">
+
       <div class="card">
         <div class="card-header">
           <h5 class="mb-0">Persona Nueva</h5>
@@ -21,22 +23,22 @@
         <div class="card-body">
           <form>
             <div class="mb-3">
-              <input type="text" class="form-control" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ' ]+" minlength="2" maxlength="70"
-                placeholder="Nombre">
+              <input type="text" id="name" class="form-control" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ']+" minlength="2"
+                maxlength="70" placeholder="Nombre">
             </div>
             <div class="mb-3">
-              <input type="email" class="form-control" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|es)"
+              <input type="email" id="email" class="form-control" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|es)"
                 placeholder="Correo">
             </div>
             <div class="mb-3">
-              <input type="number" class="form-control" min="0" max="120" placeholder="Edad">
+              <input type="number" id="age" class="form-control" min="0" max="120" placeholder="Edad">
             </div>
           </form>
         </div>
-
       </div>
 
       <button type="button" id="add-button" class="btn btn-primary">Añadir nuevo</button>
+
       <div class="register-errors">
 
       </div>
